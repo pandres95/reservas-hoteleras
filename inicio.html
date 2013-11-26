@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Inicio</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha1.js"></script>
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript" >
+            $(function(){
+                
+                $("#enviar").click(function(){
+                    
+                    var username = $("#username").val();
+                    var email = $("#email").val();
+                    
+                    var hash = CryptoJS.SHA1($("#password").val());
+                    var hash2 = CryptoJS.SHA1($("#c_password").val());
+                    
+                    if(String(hash) == String(hash2)){
+                        
+                        $.ajax({
+                            url: 'http://reservas.bool-inc.com/w_services/create_user.php',
+                            data: { 'username': username, 'email': email, 'password': String(hash), 'hashed': true},
+                            dataType: 'jsonp',
+                            success: function(data){
+                                if(data.response == true){
+                                    $("#receive_facebook").html("Has sido exitosamente inscrito");
+                                } else {
+                                    $("#receive_facebook").html("El usuario no pudo ser agregado. Posiblemente ya existe");
+                                }
+                            },
+                            error: function(data){
+                                $("#receive_facebook").html("Error");
+                            }
+                        });
+                        
+                    } else {
+                        
+                        $("#receive_facebook").html("Las contraseñas no coinciden. Por favor, revise.");
+                        
+                    }
+                    
+                });
+                
+                
+            });
+        </script>
+    </head>
+    <body>
+        <form>
+            <input type="text" id="username" placeholder="Nombre de usuario" required />
+            <input type="email" id="email" placeholder="Correo electrónico" required />
+            <input type="password" id="password" placeholder="Contraseña" required />
+            <input type="password" id="c_password" placeholder="Confirme contraseña" required />
+            <input type="button" id="enviar" value="Crear Usuario" />
+        </form>
+        <div id="receive_facebook">
+        </div>
+    </body>
+</html>

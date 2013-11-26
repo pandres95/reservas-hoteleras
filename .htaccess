@@ -1,0 +1,2 @@
+ErrorDocument 404 http://bool-inc.com/errors/404
+DirectoryIndex inicio.html index.php index.html site-down.php
